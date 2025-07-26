@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Access - My GitHub Site</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .card { background-color: #ffffff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); width: 320px; text-align: center; }
+        h2 { color: #334; margin-bottom: 25px; font-weight: 600; }
+        .form-group { margin-bottom: 18px; text-align: left; }
+        label { display: block; margin-bottom: 8px; color: #555; font-weight: 500; font-size: 0.95em; }
+        input[type="text"], input[type="password"] {
+            width: calc(100% - 24px); padding: 12px; border: 1px solid #cdd4da; border-radius: 8px;
+            font-size: 1em; box-sizing: border-box; transition: border-color 0.3s;
+        }
+        input[type="text"]:focus, input[type="password"]:focus {
+            border-color: #007bff; outline: none; box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+        button {
+            background-color: #007bff; color: white; padding: 12px 25px; border: none; border-radius: 8px;
+            cursor: pointer; font-size: 1.1em; font-weight: 600; margin-top: 25px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover { background-color: #0056b3; }
+        .error-message { color: #d9534f; margin-top: 15px; font-weight: 500; font-size: 0.9em; display: none; }
+        .register-link { margin-top: 25px; font-size: 0.9em; }
+        .register-link a { color: #007bff; text-decoration: none; font-weight: 500; }
+        .register-link a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Member Login</h2>
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" required>
+        </div>
+        <button onclick="attemptLogin()">Login to Access</button>
+        <p class="error-message" id="loginError">Invalid username or password.</p>
+                <div class="register-link">
+            New here? <a href="register.html">Request Access</a><br>
+            Forgot password? <a href="forgot_password.html">Reset Here</a>
+        </div>
+        
+    </div>
+
+    <div id="userData" style="display:none;">
+        {
+            "john.doe": "password123",
+            "jane.smith": "securepass",
+            "adminuser": "supersecret"
+            // ADD NEW APPROVED USERS HERE IN THIS FORMAT:
+            // "newusername": "newpassword",
+            // REMEMBER TO KEEP THE COMMAS BETWEEN ENTRIES EXCEPT FOR THE LAST ONE
+        }
+    </div>
+
+    <script>
+        function attemptLogin() {
+            var usernameInput = document.getElementById("username").value;
+            var passwordInput = document.getElementById("password").value;
+            var loginError = document.getElementById("loginError");
+
+            try {
+                // Parse the JSON data from the hidden div
+                var userDataString = document.getElementById("userData").textContent;
+                var allowedUsers = JSON.parse(userDataString);
+
+                // Check credentials
+                if (allowedUsers[usernameInput] && allowedUsers[usernameInput] === passwordInput) {
+                    loginError.style.display = 'none';
+                    alert("Login successful! Redirecting to your GitHub site.");
+                    window.location.href = "https://github.com/your-github-username/your-repo"; // Replace with your actual GitHub site URL
+                } else {
+                    loginError.style.display = 'block';
+                }
+            } catch (e) {
+                console.error("Error parsing user data:", e);
+                loginError.textContent = "An error occurred. Please try again later.";
+                loginError.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>

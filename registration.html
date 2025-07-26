@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Access - My Site</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .card { background-color: #ffffff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); width: 320px; text-align: center; }
+        h2 { color: #334; margin-bottom: 25px; font-weight: 600; }
+        .form-group { margin-bottom: 18px; text-align: left; }
+        label { display: block; margin-bottom: 8px; color: #555; font-weight: 500; font-size: 0.95em; }
+        input[type="text"], input[type="password"], input[type="email"] {
+            width: calc(100% - 24px); padding: 12px; border: 1px solid #cdd4da; border-radius: 8px;
+            font-size: 1em; box-sizing: border-box; transition: border-color 0.3s;
+        }
+        input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus {
+            border-color: #007bff; outline: none; box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+        button {
+            background-color: #28a745; color: white; padding: 12px 25px; border: none; border-radius: 8px;
+            cursor: pointer; font-size: 1.1em; font-weight: 600; margin-top: 25px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover { background-color: #218838; }
+        .message { margin-top: 20px; color: #007bff; font-weight: 500; font-size: 0.95em; display: none; }
+        .note { margin-top: 15px; font-size: 0.8em; color: #888; line-height: 1.5; }
+        .disclaimer { color: #d9534f; font-size: 0.85em; margin-top: 20px; padding: 10px; border: 1px solid #d9534f; border-radius: 5px; background-color: #fde0df; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Request Account Access</h2>
+        <div class="disclaimer">
+            <strong>Important:</strong> This sends your details to the admin for manual approval.
+            Your proposed password will be sent via email in plain text for setup purposes.
+        </div>
+        <form action="https://https://formspree.io/f/mldlbapd" method="POST" id="registrationForm">
+            <div class="form-group">
+                <label for="username">Preferred Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Desired Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Your Email (for confirmation):</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <button type="submit">Submit Request</button>
+            <p class="message" id="successMessage">Your request has been sent! Please wait for admin approval.</p>
+        </form>
+        <p class="note">Once approved, your provided username and password will become your login details. You will be notified via email.</p>
+    </div>
+
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            const form = event.target;
+            const successMessage = document.getElementById('successMessage');
+
+            // Basic client-side validation for better UX
+            if (!form.username.value || !form.password.value || !form.email.value) {
+                alert("Please fill in all fields.");
+                event.preventDefault(); // Stop submission
+                return;
+            }
+            if (form.password.value.length < 6) {
+                alert("Password must be at least 6 characters long.");
+                event.preventDefault(); // Stop submission
+                return;
+            }
+            // Add more robust email validation if needed
+
+            // Display success message after Formspree processes (short delay)
+            setTimeout(() => {
+                successMessage.style.display = 'block';
+                form.reset(); // Clear form fields
+            }, 100);
+        });
+    </script>
+</body>
+</html>
